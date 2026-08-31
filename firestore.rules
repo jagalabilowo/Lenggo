@@ -1,0 +1,44 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global deny catch-all for undefined collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions for security validation
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128;
+    }
+
+    // User-bound isolated subcollections
+    match /users/{userId} {
+      // User document metadata
+      allow read, write: if isOwner(userId);
+
+      // User reflections: daily debugger logs & coding notes
+      match /reflections/{reflectionId} {
+        allow read, write: if isOwner(userId) && isValidId(reflectionId);
+      }
+
+      // User active-recall quiz sets
+      match /quizzes/{quizId} {
+        allow read, write: if isOwner(userId) && isValidId(quizId);
+      }
+
+      // User weekly skill mastery reports
+      match /mastery_reports/{reportId} {
+        allow read, write: if isOwner(userId) && isValidId(reportId);
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Lenggo: Smart Learning & Coding Reflection Assistant",
+  "description": "AI-powered study log and developer reflection assistant with multi-format technical logging, active-recall quizzes, and weekly skill mastery analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

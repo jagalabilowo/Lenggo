@@ -1,0 +1,122 @@
+{
+  "entities": {
+    "Reflection": {
+      "title": "Reflection",
+      "description": "A developer coding reflection, debug note, or architectural log",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "UID of the owner user",
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the reflection entry",
+          "maxLength": 256
+        },
+        "content": {
+          "type": "string",
+          "description": "Core reflection or problem description",
+          "maxLength": 10000
+        },
+        "codeSnippet": {
+          "type": "string",
+          "description": "Associated code snippet or patch",
+          "maxLength": 20000
+        },
+        "errorTrace": {
+          "type": "string",
+          "description": "Stack trace, error logs, or compiler errors",
+          "maxLength": 20000
+        },
+        "architectureNotes": {
+          "type": "string",
+          "description": "Architectural or design considerations",
+          "maxLength": 10000
+        },
+        "difficulty": {
+          "type": "string",
+          "enum": ["trivial", "moderate", "complex", "blocker"],
+          "description": "Perceived difficulty level"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Last updated timestamp"
+        }
+      },
+      "required": ["userId", "title", "content", "createdAt"]
+    },
+    "QuizSet": {
+      "title": "QuizSet",
+      "description": "An active-recall flashcard set generated from user reflections",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "UID of the owner user",
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the quiz set",
+          "maxLength": 256
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        }
+      },
+      "required": ["userId", "title", "createdAt"]
+    },
+    "MasteryReport": {
+      "title": "MasteryReport",
+      "description": "A weekly AI-synthesized skill mastery and progress report",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "UID of the owner user",
+          "maxLength": 128
+        },
+        "weekStartDate": {
+          "type": "string",
+          "description": "Starting date of the weekly period",
+          "maxLength": 64
+        },
+        "totalReflections": {
+          "type": "number",
+          "description": "Number of reflections analyzed"
+        },
+        "executiveSummary": {
+          "type": "string",
+          "description": "Summary of weekly progress",
+          "maxLength": 5000
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        }
+      },
+      "required": ["userId", "weekStartDate", "executiveSummary", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/reflections/{reflectionId}": {
+      "schema": "Reflection",
+      "description": "User-isolated study reflections and debug logs"
+    },
+    "/users/{userId}/quizzes/{quizId}": {
+      "schema": "QuizSet",
+      "description": "User-isolated active-recall quiz sets"
+    },
+    "/users/{userId}/mastery_reports/{reportId}": {
+      "schema": "MasteryReport",
+      "description": "User-isolated weekly skill mastery reports"
+    }
+  }
+}
